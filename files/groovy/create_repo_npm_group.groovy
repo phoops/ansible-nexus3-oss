@@ -3,11 +3,11 @@ import org.sonatype.nexus.repository.config.Configuration
 
 parsed_args = new JsonSlurper().parseText(args)
 
-configuration = new Configuration(
-        repositoryName: parsed_args.name,
-        recipeName: 'npm-group',
-        online: true,
-        attributes: [
+configuration = repository.repositoryManager.newConfiguration()
+configuration.repositoryName = parsed_args.name
+configuration.recipeName = 'npm-group'
+configuration.online = true
+configuration.attributes = [
                 group  : [
                         memberNames: parsed_args.member_repos
                 ],
@@ -16,7 +16,6 @@ configuration = new Configuration(
                         strictContentTypeValidation: Boolean.valueOf(parsed_args.strict_content_validation)
                 ]
         ]
-)
 
 def existingRepository = repository.getRepositoryManager().get(parsed_args.name)
 

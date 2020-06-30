@@ -3,11 +3,11 @@ import org.sonatype.nexus.repository.config.Configuration
 
 parsed_args = new JsonSlurper().parseText(args)
 
-configuration = new Configuration(
-        repositoryName: parsed_args.name,
-        recipeName: 'maven2-hosted',
-        online: true,
-        attributes: [
+configuration = repository.repositoryManager.newConfiguration()
+configuration.repositoryName = parsed_args.name
+configuration.recipeName = 'maven2-hosted'
+configuration.online = true
+configuration.attributes = [
                 maven  : [
                         versionPolicy: parsed_args.version_policy.toUpperCase(),
                         layoutPolicy : parsed_args.layout_policy.toUpperCase()
@@ -18,7 +18,6 @@ configuration = new Configuration(
                         strictContentTypeValidation: Boolean.valueOf(parsed_args.strict_content_validation)
                 ]
         ]
-)
 
 def existingRepository = repository.getRepositoryManager().get(parsed_args.name)
 

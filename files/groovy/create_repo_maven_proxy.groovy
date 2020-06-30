@@ -9,11 +9,11 @@ authentication = parsed_args.remote_username == null ? null : [
         password: parsed_args.remote_password
 ]
 
-configuration = new Configuration(
-        repositoryName: parsed_args.name,
-        recipeName: 'maven2-proxy',
-        online: true,
-        attributes: [
+configuration = repository.repositoryManager.newConfiguration()
+configuration.repositoryName = parsed_args.name
+configuration.recipeName = 'maven2-proxy'
+configuration.online = true
+configuration.attributes = [
                 maven  : [
                         versionPolicy: parsed_args.version_policy.toUpperCase(),
                         layoutPolicy : parsed_args.layout_policy.toUpperCase()
@@ -40,7 +40,6 @@ configuration = new Configuration(
                         timeToLive: 1440.0
                 ]
         ]
-)
 
 def existingRepository = repository.getRepositoryManager().get(parsed_args.name)
 

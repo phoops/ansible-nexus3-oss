@@ -3,18 +3,17 @@ import org.sonatype.nexus.repository.config.Configuration
 
 parsed_args = new JsonSlurper().parseText(args)
 
-configuration = new Configuration(
-        repositoryName: parsed_args.name,
-        recipeName: 'npm-hosted',
-        online: true,
-        attributes: [
+configuration = repository.repositoryManager.newConfiguration()
+configuration.repositoryName = parsed_args.name
+configuration.recipeName = 'npm-hosted'
+configuration.online = true
+configuration.attributes = [
                 storage: [
                         writePolicy: parsed_args.write_policy.toUpperCase(),
                         blobStoreName: parsed_args.blob_store,
                         strictContentTypeValidation: Boolean.valueOf(parsed_args.strict_content_validation)
                 ]
         ]
-)
 
 def existingRepository = repository.getRepositoryManager().get(parsed_args.name)
 

@@ -9,11 +9,11 @@ authentication = parsed_args.remote_username == null ? null : [
         password: parsed_args.remote_password
 ]
 
-configuration = new Configuration(
-        repositoryName: parsed_args.name,
-        recipeName: 'rubygems-proxy',
-        online: true,
-        attributes: [
+configuration = repository.repositoryManager.newConfiguration()
+configuration.repositoryName = parsed_args.name
+configuration.recipeName = 'rubygems-proxy'
+configuration.online = true
+configuration.attributes = [
                 proxy  : [
                         remoteUrl: parsed_args.remote_url,
                         contentMaxAge: 1440.0,
@@ -36,7 +36,6 @@ configuration = new Configuration(
                         timeToLive: 1440.0
                 ]
         ]
-)
 
 def existingRepository = repository.getRepositoryManager().get(parsed_args.name)
 
